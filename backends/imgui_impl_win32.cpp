@@ -13,6 +13,9 @@
 // If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
+#include <Enterprise/Events.h>
+#include <Enterprise/Window.h>
+#include <glm/glm.hpp>
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #ifndef WIN32_LEAN_AND_MEAN
@@ -1195,6 +1198,28 @@ static LRESULT CALLBACK ImGui_ImplWin32_WndProcHandler_PlatformWindow(HWND hWnd,
     {
         switch (msg)
         {
+        case WM_CHAR: // Enterprise: Game text entry
+            EP::Events::Dispatch(HN("KeyChar"), char(wParam));
+            break;
+        case WM_MOUSEMOVE: // Enterprise: Mouse cursor
+            EP::Events::Dispatch(
+                HN("MousePosition"),
+                glm::vec2(GET_X_LPARAM(lParam), float(EP::Window::GetHeight()) - GET_Y_LPARAM(lParam)));
+            break;
+        case WM_INPUT: // Enterprise: Raw KB/Mouse
+        {
+            UINT RIDataSize = sizeof(RAWINPUT);
+            BYTE RIData[sizeof(RAWINPUT)];
+
+            EP_VERIFY_SLOW(GetRawInputData((HRAWINPUT)lParam,
+                                        RID_INPUT,
+                                        RIData,
+                                        &RIDataSize,
+                                        sizeof(RAWINPUTHEADER)) <= RIDataSize);
+
+            EP::Events::Dispatch(HN("Win32_RawInput"), (RAWINPUT*)RIData);
+            break;
+        }
         case WM_ERASEBKGND:
             // Prevent flickering on window invalidation
             return TRUE;
