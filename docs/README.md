@@ -1,5 +1,9 @@
-Dear ImGui
+Dear ImGui (Enterprise Branch)
 =====
+
+This branch of Dear ImGui contains custom modifications intended to benefit [Enterprise engine](https://GitHub.com/theOtherMichael/Enterprise). Do not attempt to use it outside of Enterprise: it will not even compile without Enterprise library headers.
+
+----
 
 <center><b><i>"Give someone state and they'll have a bug one day, but teach them how to represent state in two separate locations that have to be kept in sync and they'll have bugs for a lifetime."</i></b></center> <a href="https://twitter.com/rygorous/status/1507178315886444544">-ryg</a>
 
