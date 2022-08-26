@@ -15,9 +15,8 @@
 
 #include <Enterprise/Events.h>
 #include <Enterprise/Window.h>
+#include <EpInternal/Editor/GuiInput.h>
 #include <glm/glm.hpp>
-
-#include "Application/Input.h"
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
