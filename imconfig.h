@@ -24,7 +24,7 @@
 // DLL users: heaps and globals are not shared across DLL boundaries! You will need to call SetCurrentContext() + SetAllocatorFunctions()
 // for each static/DLL boundary you are calling from. Read "Context and Memory Allocators" section of imgui.cpp for more details.
 #ifdef _WIN32
-    #ifdef EP_BUILD_DYNAMIC
+    #ifdef EP_EDITOR
         #ifdef EP_BUILD_CORE
             #define IMGUI_API __declspec( dllexport )
         #else
@@ -32,7 +32,7 @@
         #endif // EP_BUILD_CORE
     #else
         #define IMGUI_API
-    #endif // EP_BUILD_DYNAMIC
+    #endif // EP_EDITOR
 #else
     #define IMGUI_API
 #endif // _WIN32
