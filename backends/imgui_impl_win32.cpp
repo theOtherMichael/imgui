@@ -16,6 +16,7 @@
 #include <Enterprise/Events.h>
 #include <Enterprise/Window.h>
 #include <EpInternal/Editor/GuiInput.h>
+#include <EpInternal/Editor/OsDragDrop_Win32.h>
 #include <glm/glm.hpp>
 
 #include "imgui.h"
@@ -948,6 +949,9 @@ static void ImGui_ImplWin32_CreateWindow(ImGuiViewport* viewport)
     viewport->PlatformRequestResize = false;
     viewport->PlatformHandle = viewport->PlatformHandleRaw = vd->Hwnd;
 
+    // Enterprise: OS Drag/Drop
+    ::DragAcceptFiles(vd->Hwnd, TRUE);
+
     ImGui_ImplWin32_Data* bd = ImGui_ImplWin32_GetBackendData();
     if (bd->OpenGlContext)
     {
@@ -1252,6 +1256,12 @@ static LRESULT CALLBACK ImGui_ImplWin32_WndProcHandler_PlatformWindow(HWND hWnd,
                     EP::Events::Dispatch(HN("Win32_RawInput"), (RAWINPUT*)RIData);
             }
 
+            break;
+        }
+        case WM_DROPFILES: // Enterprise: OS Drag/Drop
+        {
+            HDROP hDrop = (HDROP)wParam;
+            Editor::OnOsDragDrop_Win32(hDrop, hWnd);
             break;
         }
         case WM_ERASEBKGND:
